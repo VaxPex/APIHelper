@@ -43,12 +43,11 @@ class APIHelper
 			]));
 	}
 
-	public static function getGenericFlag(Entity $entity, $flagId) : bool{
+	public static function getGenericFlag(Entity $entity, int $flagId) : bool{
 		return isset($entity->getNetworkProperties()->getAll()[$flagId]) && $entity->getNetworkProperties()->getAll()[$flagId] == true;
 	}
 
-	public static function broadcastEntityEvent(Entity $entity, int $eventId, ?int $eventData = null, ?array $players = null)
-	{
+	public static function broadcastEntityEvent(Entity $entity, int $eventId, ?int $eventData = null, ?array $players = null): void{
 		self::broadcastPacket($players ?? $entity->getViewers(), ActorEventPacket::create($entity->getId(), $eventId, $eventData ?? 0));
 	}
 
@@ -57,27 +56,24 @@ class APIHelper
 	 * @param ClientboundPacket $pk
 	 * @return void
 	 */
-	public static function broadcastPacket(array $players, ClientboundPacket $pk)
-	{
+	public static function broadcastPacket(array $players, ClientboundPacket $pk){
 		foreach($players as $player){
 			$player->getNetworkSession()->sendDataPacket($pk);
 		}
 	}
 
-	public static function broadcastWorldSoundEvent(World $world, Vector3 $pos, int $soundId, int $extraData = -1, int $entityTypeId = -1, bool $isBabyMob = false, bool $disableRelativeVolume = false)
-	{
+	public static function broadcastWorldSoundEvent(World $world, Vector3 $pos, int $soundId, int $extraData = -1, string $entityTypeId = ':', bool $isBabyMob = false, bool $disableRelativeVolume = false): void{
 		$pk = new LevelSoundEventPacket();
 		$pk->sound = $soundId;
 		$pk->extraData = $extraData;
-		$pk->entityType = $entityTypeId ?? ":"; // not sure if this will work but i will fix it soon if it does not
+		$pk->entityType = $entityTypeId;
 		$pk->isBabyMob = $isBabyMob;
 		$pk->disableRelativeVolume = $disableRelativeVolume;
 		$pk->position = $pos->asVector3();
 		$world->broadcastPacketToViewers($pos, $pk);
 	}
 
-	public static function canPassThrough(Block $block): bool
-	{
+	public static function canPassThrough(Block $block): bool{
 		if($block instanceof Air){
 			return true;
 		}
