@@ -100,4 +100,32 @@ class APIHelper
 			return null;
 		}
 	}
+	
+	public static function getWoolMetaByName(string $team) : int{
+		$meta = [
+			"red" => 14,
+			"blue" => 11,
+			"yellow" => 4,
+			"green" => 5,
+			"aqua" => 3,
+			"white" => 0,
+			"pink" => 2,
+			"gray" => 8
+		];
+		return $meta[strtolower($team)];
+	}
+
+	public static function getColorByName(string $team) : string{
+		$color = [
+			"red" => "§c",
+			"blue" => "§9",
+			"yellow" => "§e",
+			"green" => "§a",
+			"aqua" => "§b",
+			"white" => "§f",
+			"pink" => "§d",
+			"gray" => "§7"
+		];
+		return $color[strtolower($team)];
+	}
 }
