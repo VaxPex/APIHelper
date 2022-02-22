@@ -47,7 +47,7 @@ class APIHelper
 		return isset($entity->getNetworkProperties()->getAll()[$flagId]) && $entity->getNetworkProperties()->getAll()[$flagId] == true;
 	}
 
-	public static function broadcastEntityEvent(Entity $entity, int $eventId, ?int $eventData = null, ?array $players = null): void{
+	public static function broadcastActorEvent(Entity $entity, int $eventId, ?int $eventData = null, ?array $players = null): void{
 		self::broadcastPacket($players ?? $entity->getViewers(), ActorEventPacket::create($entity->getId(), $eventId, $eventData ?? 0));
 	}
 
