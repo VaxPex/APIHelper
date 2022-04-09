@@ -16,6 +16,7 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\ClientboundPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\types\entity\ByteMetadataProperty;
 use pocketmine\player\Player;
 use pocketmine\world\World;
 
@@ -43,8 +44,11 @@ class APIHelper
 			]));
 	}
 
-	public static function getGenericFlag(Entity $entity, int $flagId) : bool{
-		return isset($entity->getNetworkProperties()->getAll()[$flagId]) && $entity->getNetworkProperties()->getAll()[$flagId] == true;
+	public static function getGenericFlag(Entity $entity, int $flagId, bool $is = false) {
+		if($is === true){
+			return $entity->getNetworkProperties()->getAll()[$flagId] !== null && $entity->getNetworkProperties()->getAll()[$flagId]->equals(new ByteMetadataProperty(1));
+		}
+		return $entity->getNetworkProperties()->getAll()[$flagId];
 	}
 
 	public static function broadcastActorEvent(Entity $entity, int $eventId, ?int $eventData = null, ?array $players = null): void{
