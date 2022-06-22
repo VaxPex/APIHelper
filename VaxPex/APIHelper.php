@@ -26,7 +26,7 @@ class APIHelper
 	/**
 	 * Helper function which creates minimal NBT needed to spawn an entity.
 	 */
-	public static function makeNBT(Vector3 $position, ?Vector3 $motion = null, float $yaw = 0.0, float $pitch = 0.0): CompoundTag{
+	public static function makeEntityNBT(Vector3 $position, ?Vector3 $motion = null, float $yaw = 0.0, float $pitch = 0.0): CompoundTag{
 		return CompoundTag::create()
 			->setTag("Pos", new ListTag([
 				new DoubleTag($position->x),
@@ -66,7 +66,7 @@ class APIHelper
 		}
 	}
 
-	public static function broadcastWorldSoundEvent(World $world, Vector3 $pos, int $soundId, int $extraData = -1, string $entityTypeId = ':', bool $isBabyMob = false, bool $disableRelativeVolume = false): void{
+	public static function broadcastLevelSoundEvent(World $world, Vector3 $pos, int $soundId, int $extraData = -1, string $entityTypeId = ':', bool $isBabyMob = false, bool $disableRelativeVolume = false): void{
 		$pk = new LevelSoundEventPacket();
 		$pk->sound = $soundId;
 		$pk->extraData = $extraData;
@@ -77,7 +77,7 @@ class APIHelper
 		$world->broadcastPacketToViewers($pos, $pk);
 	}
 
-	public static function canPassThrough(Block $block): bool{
+	public static function canPassThroughBlock(Block $block): bool{
 		if($block instanceof Air){
 			return true;
 		}
